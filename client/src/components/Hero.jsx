@@ -23,7 +23,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section id="home" className="relative min-h-screen flex items-center px-6 pt-24 pb-16 overflow-hidden">
+    <section id="home" className="relative min-h-screen flex items-center px-4 sm:px-6 pt-20 sm:pt-24 pb-12 sm:pb-16 overflow-hidden">
       <div className="absolute inset-0 hero-glow" />
       <div className="absolute inset-0 bg-grid-strong" />
       <div className="absolute inset-0 bg-circuit-strong" />
@@ -31,17 +31,17 @@ export default function Hero() {
       <div className="absolute inset-0 pattern-orbital opacity-70 orbits-animate" />
       <div className="absolute inset-0 pattern-circuit opacity-45 pointer-events-none pattern-animate" />
       <div className="absolute inset-0 bg-scanlines-strong pointer-events-none" />
-      <svg className="absolute inset-0 circuit-svg opacity-40" viewBox="0 0 1200 600" aria-hidden="true">
+      <svg className="absolute inset-0 circuit-svg opacity-40 hidden md:block" viewBox="0 0 1200 600" aria-hidden="true">
         <path d="M40 120 H260 V220 H520 V140 H760 V260 H1120" />
         <path d="M80 420 H300 V360 H540 V460 H840 V380 H1160" />
         <path d="M120 60 H420 V120 H680 V80 H980" />
       </svg>
-      <div className="absolute -left-12 bottom-24 h-48 w-48 rounded-full heartbeat-pulse blur-2xl opacity-60" />
-      <div className="absolute right-20 top-24 h-36 w-36 rounded-full heartbeat-pulse blur-2xl opacity-50" />
+      <div className="absolute -left-12 bottom-24 h-48 w-48 rounded-full heartbeat-pulse blur-2xl opacity-60 hidden sm:block" />
+      <div className="absolute right-20 top-24 h-36 w-36 rounded-full heartbeat-pulse blur-2xl opacity-50 hidden sm:block" />
 
-      <div className="max-w-6xl mx-auto grid lg:grid-cols-[1.05fr_0.95fr] gap-8 items-center relative z-10">
+      <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-[1.05fr_0.95fr] gap-8 items-center relative z-10">
         <div className="text-left relative">
-          <svg className="hud-frame" viewBox="0 0 340 200" aria-hidden="true">
+          <svg className="hud-frame hidden md:block" viewBox="0 0 340 200" aria-hidden="true">
             <path d="M10 20 H120 M160 20 H330 M10 60 H220 M260 60 H330 M10 120 H90 M130 120 H330 M10 170 H200 M240 170 H330" />
             <path d="M20 10 V40 M320 10 V40 M20 160 V190 M320 160 V190" />
           </svg>
@@ -122,7 +122,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="relative flex justify-center"
+          className="relative flex justify-center mt-6 lg:mt-0"
         >
           <div className="id-hanger id-swing">
             <div className="vector-gray" style={{ top: "-60px", right: "-40px", width: "140px", height: "140px" }} />
@@ -133,7 +133,7 @@ export default function Hero() {
                 <img
                   src={profileImg}
                   alt="Shlok Shah"
-                  className="h-[260px] w-full object-cover object-top"
+                  className="h-56 sm:h-[260px] w-full object-cover object-top"
                   loading="eager"
                 />
               </div>
@@ -144,7 +144,7 @@ export default function Hero() {
             </div>
           </div>
         </motion.div>
-        <div className="grid gap-4">
+        <div className="hidden lg:grid gap-4">
           <div className="hud-card">
             <div className="hud-stat">API Latency</div>
             <div className="hud-value">98%</div>
@@ -161,14 +161,14 @@ export default function Hero() {
           </div>
         </div>
 
-        <div className="absolute right-10 top-32 space-y-3 hidden lg:block">
+        <div className="absolute right-10 top-32 space-y-3 hidden xl:block">
           <div className="hud-widget">CPU Load • 23%</div>
           <div className="hud-widget">Memory • 68%</div>
           <div className="hud-widget">Builds • Passing</div>
         </div>
       </div>
 
-      <div className="absolute bottom-10 left-0 right-0 flex justify-center ecg-wrapper">
+      <div className="absolute bottom-10 left-0 right-0 hidden sm:flex justify-center ecg-wrapper">
         <svg width="520" height="60" viewBox="0 0 520 60" aria-hidden="true">
           <path
             className="ecg-line"
@@ -176,7 +176,7 @@ export default function Hero() {
           />
         </svg>
       </div>
-      <div className="ticker">
+      <div className="ticker hidden md:block">
         <div className="ticker-track">
           <span>FULL-STACK</span>
           <span>SECURITY</span>

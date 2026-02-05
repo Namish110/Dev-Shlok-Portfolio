@@ -3,11 +3,30 @@ import { motion } from "framer-motion";
 import dataCenter from "../assets/data-center.jpg";
 
 export default function Contact() {
-  const [success, setSuccess] = useState(false);
-  const handleSubmit = (e) => {
+  const [status, setStatus] = useState("idle");
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSuccess(true);
-    setTimeout(() => setSuccess(false), 2000);
+    setStatus("loading");
+
+    try {
+      const formData = new FormData(e.target);
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await response.json();
+
+      if (data.success) {
+        setStatus("success");
+        e.target.reset();
+      } else {
+        setStatus("error");
+      }
+    } catch (error) {
+      setStatus("error");
+    }
+
+    setTimeout(() => setStatus("idle"), 3000);
   };
 
   return (
@@ -61,12 +80,10 @@ export default function Contact() {
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          action="https://api.web3forms.com/submit"
-          method="POST"
           onSubmit={handleSubmit}
           className="glass-card flex flex-col gap-4"
         >
-          <input type="hidden" name="access_key" value="YOUR_WEB3FORMS_KEY" />
+          <input type="hidden" name="access_key" value="af472538-71d0-4a5f-a037-9a7278daa8ee" />
           <input type="hidden" name="subject" value="New message from portfolio" />
           <input type="checkbox" name="botcheck" style={{ display: "none" }} />
           <input
@@ -90,17 +107,29 @@ export default function Contact() {
             required
             className="bg-surface border border-soft rounded-lg px-4 py-3 text-primary"
           />
-          <button className="btn-accent hover:scale-105 transition magnetic">
-            Send Message
+          <button
+            className="btn-accent hover:scale-105 transition magnetic"
+            disabled={status === "loading"}
+          >
+            {status === "loading" ? "Sending..." : "Send Message"}
           </button>
 
-          {success && (
+          {status === "success" && (
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               className="text-secondary"
             >
               Message sent successfully!
+            </motion.p>
+          )}
+          {status === "error" && (
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-secondary"
+            >
+              Something went wrong. Please try again.
             </motion.p>
           )}
         </motion.form>

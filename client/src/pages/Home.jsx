@@ -16,6 +16,8 @@ export default function Home() {
     let raf = 0;
     const cursor = document.querySelector(".cursor-ring");
     let magnets = document.querySelectorAll(".magnetic");
+    const isTouch = window.matchMedia("(hover: none)").matches;
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const onMove = (e) => {
       if (raf) return;
       raf = requestAnimationFrame(() => {
@@ -43,7 +45,12 @@ export default function Home() {
       const value = Math.min(window.scrollY / max, 1);
       document.documentElement.style.setProperty("--scroll", value.toFixed(3));
     };
-    window.addEventListener("mousemove", onMove, { passive: true });
+    if (!isTouch && !prefersReducedMotion) {
+      window.addEventListener("mousemove", onMove, { passive: true });
+    } else {
+      document.documentElement.style.setProperty("--mx", "0");
+      document.documentElement.style.setProperty("--my", "0");
+    }
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
     const t = setTimeout(() => setLoading(false), 1200);
