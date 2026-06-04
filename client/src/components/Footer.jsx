@@ -1,4 +1,4 @@
-export default function Footer() {
+export default function Footer({ onNavigate }) {
   return (
     <footer className="editorial-section section-alt">
       <div className="max-w-6xl mx-auto footer-shell px-6">
@@ -46,9 +46,36 @@ export default function Footer() {
                 </a>
               </div>
               <div className="footer-nav">
-                <a href="#about" className="footer-nav-link">About</a>
-                <a href="#projects" className="footer-nav-link">Projects</a>
-                <a href="#contact" className="footer-nav-link">Contact</a>
+                <a
+                  href="/about"
+                  className="footer-nav-link"
+                  onClick={(event) => {
+                    event.preventDefault();
+                    onNavigate?.("/about");
+                  }}
+                >
+                  About
+                </a>
+                <a
+                  href="/projects"
+                  className="footer-nav-link"
+                  onClick={(event) => {
+                    event.preventDefault();
+                    onNavigate?.("/projects");
+                  }}
+                >
+                  Projects
+                </a>
+                <a
+                  href="/contact"
+                  className="footer-nav-link"
+                  onClick={(event) => {
+                    event.preventDefault();
+                    onNavigate?.("/contact");
+                  }}
+                >
+                  Contact
+                </a>
               </div>
             </div>
           </div>

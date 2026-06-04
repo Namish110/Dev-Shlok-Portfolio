@@ -13,6 +13,51 @@ const siteMeta = {
   sameAs: ["https://github.com/Namish110", "https://www.linkedin.com/in/shlokshahdeveloper"],
 };
 
+const routeMeta = {
+  "/": siteMeta,
+  "/about": {
+    ...siteMeta,
+    title: "About Shlok Shah | .NET Developer",
+    description:
+      "Learn more about Shlok Shah, a full-stack .NET developer focused on reliable web apps, thoughtful UX, and clean delivery.",
+  },
+  "/skills": {
+    ...siteMeta,
+    title: "Stack | Shlok Shah",
+    description: "Explore the technologies, frameworks, and tools Shlok Shah uses to build modern web applications.",
+  },
+  "/experience": {
+    ...siteMeta,
+    title: "Experience | Shlok Shah",
+    description: "Review Shlok Shah's professional experience across enterprise web applications and delivery work.",
+  },
+  "/projects": {
+    ...siteMeta,
+    title: "Projects | Shlok Shah",
+    description: "See selected projects built by Shlok Shah with .NET, React, APIs, and enterprise workflows.",
+  },
+  "/faq": {
+    ...siteMeta,
+    title: "FAQ | Shlok Shah",
+    description: "Get quick answers about Shlok Shah's portfolio, services, and the kind of work he enjoys.",
+  },
+  "/reviews": {
+    ...siteMeta,
+    title: "Reviews | Shlok Shah",
+    description: "Read client feedback and collaboration highlights for Shlok Shah's work.",
+  },
+  "/certificates": {
+    ...siteMeta,
+    title: "Certificates | Shlok Shah",
+    description: "See certificates and credentials that support Shlok Shah's technical background.",
+  },
+  "/contact": {
+    ...siteMeta,
+    title: "Contact | Shlok Shah",
+    description: "Reach out to Shlok Shah for full-time roles, freelance projects, and collaborative web work.",
+  },
+};
+
 function upsertTag(selector, tagName, attributes) {
   let element = document.head.querySelector(selector);
 
@@ -39,17 +84,18 @@ function upsertJsonLd(id, data) {
   script.textContent = JSON.stringify(data);
 }
 
-export default function Seo() {
+export default function Seo({ currentPath = "/" }) {
   useEffect(() => {
-    const url = new URL(window.location.pathname, window.location.origin).toString();
+    const activeMeta = routeMeta[currentPath] || siteMeta;
+    const url = new URL(currentPath, window.location.origin).toString();
     const image = new URL(siteMeta.imagePath, window.location.origin).toString();
 
-    document.title = siteMeta.title;
+    document.title = activeMeta.title;
     document.documentElement.lang = "en";
 
     upsertTag('meta[name="description"]', "meta", {
       name: "description",
-      content: siteMeta.description,
+      content: activeMeta.description,
     });
     upsertTag('meta[name="author"]', "meta", {
       name: "author",
@@ -73,11 +119,11 @@ export default function Seo() {
     });
     upsertTag('meta[property="og:title"]', "meta", {
       property: "og:title",
-      content: siteMeta.title,
+      content: activeMeta.title,
     });
     upsertTag('meta[property="og:description"]', "meta", {
       property: "og:description",
-      content: siteMeta.description,
+      content: activeMeta.description,
     });
     upsertTag('meta[property="og:type"]', "meta", {
       property: "og:type",
@@ -109,11 +155,11 @@ export default function Seo() {
     });
     upsertTag('meta[name="twitter:title"]', "meta", {
       name: "twitter:title",
-      content: siteMeta.title,
+      content: activeMeta.title,
     });
     upsertTag('meta[name="twitter:description"]', "meta", {
       name: "twitter:description",
-      content: siteMeta.description,
+      content: activeMeta.description,
     });
     upsertTag('meta[name="twitter:image"]', "meta", {
       name: "twitter:image",
@@ -132,15 +178,15 @@ export default function Seo() {
           "@id": `${url}#website`,
           url,
           name: siteMeta.siteName,
-          description: siteMeta.description,
+          description: activeMeta.description,
           inLanguage: "en-IN",
         },
         {
           "@type": "WebPage",
           "@id": `${url}#webpage`,
           url,
-          name: siteMeta.title,
-          description: siteMeta.description,
+          name: activeMeta.title,
+          description: activeMeta.description,
           isPartOf: { "@id": `${url}#website` },
           inLanguage: "en-IN",
         },
@@ -176,7 +222,7 @@ export default function Seo() {
         },
       ],
     });
-  }, []);
+  }, [currentPath]);
 
   return null;
 }

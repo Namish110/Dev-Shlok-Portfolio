@@ -11,7 +11,7 @@ const siteUrl = resolvedDomain
   ? `https://${resolvedDomain.replace(/^https?:\/\//, "").replace(/\/+$/, "")}`
   : "";
 
-const routes = ["/"];
+const routes = ["/", "/about", "/skills", "/experience", "/projects", "/faq", "/reviews", "/certificates", "/contact"];
 
 const robotsPath = path.join(publicDir, "robots.txt");
 const sitemapPath = path.join(publicDir, "sitemap.xml");

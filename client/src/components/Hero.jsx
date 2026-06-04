@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { useEffect } from "react";
 
-export default function Hero() {
+export default function Hero({ onNavigate }) {
   useEffect(() => {
     let raf = 0;
     const onScroll = () => {
@@ -79,11 +79,32 @@ export default function Hero() {
           </motion.p>
 
           <div className="mt-8 flex flex-wrap gap-4">
-          <a href="#projects" className="btn-accent hover:scale-[1.02] magnetic">
+          <a
+            href="/projects"
+            onClick={(event) => {
+              event.preventDefault();
+              onNavigate?.("/projects");
+            }}
+            className="btn-accent hover:scale-[1.02] magnetic"
+          >
             View Projects
           </a>
           <a
-            href="#contact"
+            href="/about"
+            onClick={(event) => {
+              event.preventDefault();
+              onNavigate?.("/about");
+            }}
+            className="px-6 py-3 rounded-full border border-soft text-muted hover:text-primary transition magnetic"
+          >
+            About Me
+          </a>
+          <a
+            href="/contact"
+            onClick={(event) => {
+              event.preventDefault();
+              onNavigate?.("/contact");
+            }}
             className="px-6 py-3 rounded-full border border-soft text-muted hover:text-primary transition magnetic"
           >
             Contact Me

@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
-import About from "../components/About";
 import Skills from "../components/Skills";
 import Experience from "../components/Experience";
 import Projects from "../components/Projects";
@@ -11,7 +9,7 @@ import Certificates from "../components/Certificates";
 import Contact from "../components/Contact";
 import Footer from "../components/Footer";
 
-export default function Home() {
+export default function Home({ onNavigate }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -83,7 +81,6 @@ export default function Home() {
           </div>
         </div>
       )}
-      <Navbar />
       <div className="parallax-layer layer-a" aria-hidden="true" />
       <div className="parallax-layer layer-b" aria-hidden="true" />
       <div className="data-stream" aria-hidden="true" />
@@ -92,8 +89,7 @@ export default function Home() {
       </div>
       <div className="cursor-ring" aria-hidden="true" />
       <main id="main-content" className="scroll-snap">
-        <Hero />
-        <About />
+        <Hero onNavigate={onNavigate} />
         <Skills />
         <Experience />
         <Projects />
@@ -101,7 +97,7 @@ export default function Home() {
         <ClientReview />
         <Certificates />
         <Contact />
-        <Footer />
+        <Footer onNavigate={onNavigate} />
       </main>
     </>
   );
