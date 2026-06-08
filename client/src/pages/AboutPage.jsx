@@ -214,7 +214,7 @@ export default function AboutPage({ onNavigate }) {
         </div>
       </section>
 
-      <section className="editorial-section section-alt px-6">
+      {/* <section className="editorial-section section-alt px-6">
         <div className="max-w-6xl mx-auto about-content-grid">
           <motion.div
             initial={{ opacity: 0, y: 18 }}
@@ -268,7 +268,7 @@ export default function AboutPage({ onNavigate }) {
             </div>
           </motion.div>
         </div>
-      </section>
+      </section> */}
     </main>
   );
 }
