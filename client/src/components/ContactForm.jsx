@@ -2,7 +2,7 @@
 
 const contactItems = [
   { label: "Email", value: "guptanamish11@gamail.com", href: "mailto:guptanamish11@gamail.com" },
-  { label: "Phone", value: "+91 00000 00000", href: "tel:+910000000000" },
+
   { label: "Location", value: "Delhi, India", href: "https://maps.google.com/?q=Delhi,India" },
   { label: "LinkedIn", value: "Connect professionally", href: "https://www.linkedin.com/in/shlokshahdeveloper" },
   { label: "GitHub", value: "Review code", href: "https://github.com/Namish110" },
