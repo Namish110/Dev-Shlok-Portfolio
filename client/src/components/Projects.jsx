@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import bondsaddaImg from "../assets/images/bondsadda.png";
 import dppcccvrImg from "../assets/images/dppcccvr.png";
 import employeemImg from "../assets/images/employeem.png";
@@ -13,18 +13,21 @@ const projects = [
     desc: "A secure financial platform for managing bond portfolios.",
     tech: "React, .NET Core, SQL Server",
     image: bondsaddaImg,
+    liveUrl: "https://bondsadda.com",
   },
   {
     title: "Delhi Police PCC Portal",
     desc: "Government portal for police clearance certificate workflows.",
     tech: "React, ASP.NET MVC, MySQL",
     image: dppcccvrImg,
+    liveUrl: "https://pcccvr.delhipolice.gov.in/",
   },
   {
     title: "Hospital Management System",
     desc: "System for patient records, scheduling, and billing.",
     tech: "Angular, Web API, SQL Server",
     image: hospitalImg,
+    liveUrl: "https://csmc.in/login",
   },
   {
     title: "Employee Management System",
@@ -46,23 +49,22 @@ const projects = [
   },
 ];
 
-const wrapIndex = (value, len) => ((value % len) + len) % len;
-
 export default function Projects() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const featuredProject = projects[activeIndex];
+  const nextPreviewProjects = projects.filter((_, index) => index !== activeIndex).slice(0, 3);
+  const bottomProjects = projects.filter((_, index) => index !== activeIndex).slice(3);
 
-  const cards = useMemo(
-    () =>
-      [-1, 0, 1].map((offset) => {
-        const index = wrapIndex(activeIndex + offset, projects.length);
-        return { offset, index, project: projects[index] };
-      }),
-    [activeIndex]
-  );
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) return undefined;
 
-  const nextSlide = () => setActiveIndex((prev) => wrapIndex(prev + 1, projects.length));
-  const prevSlide = () => setActiveIndex((prev) => wrapIndex(prev - 1, projects.length));
-  const activeProject = projects[activeIndex];
+    const timer = window.setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % projects.length);
+    }, 4200);
+
+    return () => window.clearInterval(timer);
+  }, []);
 
   return (
     <section id="projects" className="editorial-section px-6 section-alt">
@@ -75,52 +77,142 @@ export default function Projects() {
               Production-grade systems focused on scalable APIs, secure architecture, and clean UX.
             </p>
           </div>
-          <div className="project-slider-controls">
-            <button type="button" onClick={prevSlide} className="project-nav-btn" aria-label="Previous project">
-              Prev
-            </button>
-            <button type="button" onClick={nextSlide} className="project-nav-btn" aria-label="Next project">
-              Next
-            </button>
-          </div>
         </div>
 
-        <div className="stack-carousel">
-          {cards.map(({ offset, index, project }) => (
-            <motion.button
-              key={project.title}
-              type="button"
-              initial={false}
-              animate={{
-                x: offset * 220,
-                scale: offset === 0 ? 1 : 0.9,
-                opacity: offset === 0 ? 1 : 0.56,
-              }}
-              transition={{ duration: 0.35, ease: "easeOut" }}
-              className={`stack-card stack-card-${offset === 0 ? "center" : offset < 0 ? "left" : "right"}`}
-              onClick={() => setActiveIndex(index)}
-              aria-label={`Open ${project.title}`}
+        <div className="projects-cinema-layout">
+          <div className="project-cinema-stack">
+            <motion.article
+              key={featuredProject.title}
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.35 }}
+              className="glass-card project-cinema-main"
             >
-              <img src={project.image} alt={project.title} className="stack-card-image" loading="lazy" decoding="async" />
-            </motion.button>
-          ))}
-        </div>
+              <div className="project-cinema-media">
+                <img
+                  src={featuredProject.image}
+                  alt={featuredProject.title}
+                  className="project-cinema-image"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <div className="project-cinema-overlay">
+                  <span className="project-cinema-label">Featured Project</span>
+                  <h3 className="project-cinema-title">{featuredProject.title}</h3>
+                  <p className="project-cinema-desc">{featuredProject.desc}</p>
+                </div>
+              </div>
 
-        <motion.div
-          key={activeProject.title}
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.25 }}
-          className="glass-card project-meta-card"
-        >
-          <h3 className="text-xl font-semibold">{activeProject.title}</h3>
-          <p className="text-muted mt-1">{activeProject.desc}</p>
-          <p className="text-accent text-sm mt-2">{activeProject.tech}</p>
-          <div className="mt-3 flex gap-3">
-            <button className="px-4 py-2 rounded-full btn-accent text-sm magnetic">GitHub</button>
-            <button className="px-4 py-2 rounded-full border border-soft text-muted text-sm magnetic">Live Demo</button>
+              <div className="project-cinema-footer">
+                <p className="text-accent text-sm">{featuredProject.tech}</p>
+                <div className="project-cinema-actions">
+                  <button className="project-mini-btn project-mini-btn-primary magnetic">GitHub</button>
+                  {featuredProject.liveUrl ? (
+                    <a
+                      href={featuredProject.liveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="project-mini-btn project-mini-btn-secondary magnetic"
+                    >
+                      Live Demo
+                    </a>
+                  ) : (
+                    <button className="project-mini-btn project-mini-btn-secondary magnetic" disabled>
+                      Live Demo
+                    </button>
+                  )}
+                </div>
+              </div>
+            </motion.article>
+
+            <div className="project-cinema-strip">
+              {bottomProjects.map((project, index) => (
+                <motion.article
+                  key={project.title}
+                  initial={{ opacity: 0, y: 14 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: index * 0.04 }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  className="glass-card project-strip-card"
+                >
+                  <img
+                    src={project.image}
+                    alt={project.title}
+                    className="project-strip-image"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div className="project-strip-copy">
+                    <p className="project-card-kicker">0{index + 5}</p>
+                    <h3 className="project-strip-title">{project.title}</h3>
+                    <p className="text-muted project-strip-desc">{project.desc}</p>
+                    <div className="project-cinema-actions mt-4">
+                      {project.liveUrl ? (
+                        <a
+                          href={project.liveUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="project-mini-btn project-mini-btn-secondary magnetic"
+                        >
+                          Live Demo
+                        </a>
+                      ) : (
+                        <button className="project-mini-btn project-mini-btn-secondary magnetic" disabled>
+                          Live Demo
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </motion.article>
+              ))}
+            </div>
           </div>
-        </motion.div>
+
+          <div className="project-cinema-rail">
+            {nextPreviewProjects.map((project, index) => (
+              <motion.article
+                key={project.title}
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: index * 0.04 }}
+                viewport={{ once: true, amount: 0.2 }}
+                className={`glass-card project-cinema-rail-card ${project.title === featuredProject.title ? "is-active" : ""}`}
+              >
+                <div className="project-cinema-thumb">
+                  <img
+                    src={project.image}
+                    alt={project.title}
+                    className="project-cinema-thumb-image"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+                <div className="project-cinema-rail-copy">
+                  <p className="project-card-kicker">0{index + 2}</p>
+                  <h3 className="project-cinema-rail-title">{project.title}</h3>
+                  <p className="text-muted project-cinema-rail-desc">{project.desc}</p>
+                  <p className="text-accent text-sm mt-2">{project.tech}</p>
+                  <div className="project-cinema-actions mt-4">
+                    {project.liveUrl ? (
+                      <a
+                        href={project.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="project-mini-btn project-mini-btn-secondary magnetic"
+                      >
+                        Live Demo
+                      </a>
+                    ) : (
+                      <button className="project-mini-btn project-mini-btn-secondary magnetic" disabled>
+                        Live Demo
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </motion.article>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );
